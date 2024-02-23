@@ -13,9 +13,18 @@
 #     ('text2.txt'. 'hypotheses.')
 #   ]
 #
-def load_input(input_directory):
-    pass
+import glob
+import fileinput
 
+
+def load_input(input_directory):
+    sequence = []
+    filenames = glob.glob(input_directory + "/*")
+    with fileinput.input(files=filenames) as f:
+        for line in f:
+            sequence.append((fileinput.filename(), line))
+    return sequence
+    
 
 #
 # Escriba una función llamada maper que recibe una lista de tuplas de la
@@ -30,7 +39,12 @@ def load_input(input_directory):
 #   ]
 #
 def mapper(sequence):
-    pass
+    new_sequence = []
+    for _, text in sequence:
+        words = text.split()
+        for word in words:
+            new_sequence.append((word, 1))
+    return new_sequence
 
 
 #
@@ -45,7 +59,14 @@ def mapper(sequence):
 #   ]
 #
 def shuffle_and_sort(sequence):
-    pass
+    sorted_sequence = sorted(sequence, key=lambda x: x[0])
+    return sorted_sequence
+
+
+sequence = load_input("input")
+sequence = mapper(sequence)
+sequence = shuffle_and_sort(sequence)
+print(sequence)
 
 
 #
@@ -56,6 +77,10 @@ def shuffle_and_sort(sequence):
 #
 def reducer(sequence):
     pass
+
+
+
+
 
 
 #
@@ -93,8 +118,8 @@ def job(input_directory, output_directory):
     pass
 
 
-if __name__ == "__main__":
-    job(
-        "input",
-        "output",
-    )
+# if __name__ == "__main__":
+#     job(
+#         "input",
+#         "output",
+#     )
